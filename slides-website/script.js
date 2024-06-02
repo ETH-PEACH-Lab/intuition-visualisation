@@ -1,6 +1,38 @@
 let slidesPerPage = 7;
 let currentPage = 0;
 let slideSets = []; // Define slideSets in the global scope
+let filteredSlideSets = []; // Define filtered slideSets
+
+const topicColorMapping = {
+    'array': '#ADD8E6',         // Light Blue
+    'tree': '#90EE90',          // Light Green
+    'graph': '#FFB6C1',         // Light Pink
+    'dynamic programming': '#FFD700', // Gold
+    'string': '#FF69B4',        // Hot Pink
+    'math': '#CD5C5C',          // Indian Red
+    'hash table': '#FFA07A',    // Light Salmon
+    'depth-first search': '#20B2AA', // Light Sea Green
+    'breadth-first search': '#778899', // Light Slate Gray
+    'two pointers': '#B0E0E6',  // Powder Blue
+    'binary search': '#32CD32', // Lime Green
+    'backtracking': '#FF4500',  // Orange Red
+    'greedy': '#DA70D6',        // Orchid
+    'heap': '#EEE8AA',          // Pale Goldenrod
+    'default': '#D3D3D3'        // Light Gray
+};
+
+function getColorForTopic(topic) {
+    const normalizedTopic = topic.trim().toLowerCase();
+    return topicColorMapping[normalizedTopic] || topicColorMapping['default'];
+}
+
+function createTopicElement(topic) {
+    const topicElement = document.createElement('span');
+    topicElement.classList.add('topic-label');
+    topicElement.textContent = topic;
+    topicElement.style.backgroundColor = getColorForTopic(topic);
+    return topicElement;
+}
 
 function createSlideSection(slideSet, index) {
     const section = document.createElement('section');
@@ -10,9 +42,18 @@ function createSlideSection(slideSet, index) {
     title.textContent = slideSet.title;
     section.appendChild(title);
 
+    const link = document.createElement('a');
+    link.href = slideSet.link;
+    link.textContent = 'Problem Link';
+    link.target = '_blank';
+    section.appendChild(link);
+
     const topics = document.createElement('div');
     topics.classList.add('topics');
-    topics.textContent = slideSet.topics.join(' ');
+    slideSet.topics.forEach(topic => {
+        const topicElement = createTopicElement(topic);
+        topics.appendChild(topicElement);
+    });
     section.appendChild(topics);
 
     const img = document.createElement('img');
@@ -50,7 +91,7 @@ function createSlideSection(slideSet, index) {
 }
 
 function updateSlide(index, direction) {
-    const slideSet = slideSets[index];
+    const slideSet = filteredSlideSets[index];
     const img = document.getElementById(`slide-image-${index}`);
     const pageInfo = document.getElementById(`page-info-${index}`);
     
@@ -96,9 +137,24 @@ function updatePaginationControls(currentPage, slideSets) {
     }
 }
 
+function filterSlidesByTopics(topics) {
+    const normalizedTopics = topics.map(topic => topic.trim().toLowerCase());
+    filteredSlideSets = slideSets.filter(slideSet =>
+        normalizedTopics.every(topic => slideSet.topics.map(t => t.trim().toLowerCase()).includes(topic))
+    );
+    renderPage(0, filteredSlideSets);
+}
+
+document.getElementById('filter-button').addEventListener('click', () => {
+    const topicFilterInput = document.getElementById('topic-filter').value;
+    const topics = topicFilterInput.split(',');
+    filterSlidesByTopics(topics);
+});
+
 fetch('slideSets.json')
     .then(response => response.json())
     .then(data => {
         slideSets = data; // Assign fetched data to the global slideSets variable
+        filteredSlideSets = slideSets; // Initialize filteredSlideSets with all slides
         renderPage(0, slideSets);
     });
