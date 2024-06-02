@@ -1,4 +1,4 @@
-let slidesPerPage = 7;
+let slidesPerPage = 20;
 let currentPage = 0;
 let slideSets = []; // Define slideSets in the global scope
 let filteredSlideSets = []; // Define filtered slideSets
@@ -26,11 +26,15 @@ function getColorForTopic(topic) {
     return topicColorMapping[normalizedTopic] || topicColorMapping['default'];
 }
 
-function createTopicElement(topic) {
+function createTopicElement(topic, isClickable = false) {
     const topicElement = document.createElement('span');
     topicElement.classList.add('topic-label');
     topicElement.textContent = topic;
     topicElement.style.backgroundColor = getColorForTopic(topic);
+    if (isClickable) {
+        topicElement.classList.add('clickable');
+        topicElement.addEventListener('click', () => filterSlidesByTopics([topic]));
+    }
     return topicElement;
 }
 
@@ -118,6 +122,7 @@ function renderPage(page, slideSets) {
     }
 
     updatePaginationControls(page, slideSets);
+    updateSlideCount(slideSets.length);
 }
 
 function updatePaginationControls(currentPage, slideSets) {
@@ -137,12 +142,29 @@ function updatePaginationControls(currentPage, slideSets) {
     }
 }
 
+function updateSlideCount(count) {
+    const slideCountContainer = document.getElementById('slide-count-container');
+    slideCountContainer.textContent = `Slides found: ${count}`;
+}
+
 function filterSlidesByTopics(topics) {
     const normalizedTopics = topics.map(topic => topic.trim().toLowerCase());
     filteredSlideSets = slideSets.filter(slideSet =>
         normalizedTopics.every(topic => slideSet.topics.map(t => t.trim().toLowerCase()).includes(topic))
     );
     renderPage(0, filteredSlideSets);
+}
+
+function renderTopics(topics) {
+    const container = document.getElementById('topic-tags-container');
+    container.innerHTML = '';
+
+    const uniqueTopics = [...new Set(topics.flat())];
+
+    uniqueTopics.forEach(topic => {
+        const topicElement = createTopicElement(topic, true);
+        container.appendChild(topicElement);
+    });
 }
 
 document.getElementById('filter-button').addEventListener('click', () => {
@@ -156,5 +178,7 @@ fetch('slideSets.json')
     .then(data => {
         slideSets = data; // Assign fetched data to the global slideSets variable
         filteredSlideSets = slideSets; // Initialize filteredSlideSets with all slides
+        const allTopics = slideSets.map(slideSet => slideSet.topics);
+        renderTopics(allTopics);
         renderPage(0, slideSets);
     });
