@@ -10,38 +10,38 @@ h1 {
 }
 
 .slide-section {
-    margin-bottom: 80px;
+    margin-bottom: 80px; /* Set bottom margin to 80px to add more space between slides */
     text-align: center;
-    position: relative; 
-    width: 33%; 
-    margin-left: auto; 
-    margin-right: auto;
+    position: relative; /* Enable positioning for child elements */
+    width: 33%; /* Set width to match the image */
+    margin-left: auto; /* Center the slide section */
+    margin-right: auto; /* Center the slide section */
 }
 
 .slide-section h2 {
-    margin: 0; 
+    margin: 0; /* Remove default margin */
 }
 
 .slide-section img {
-    width: 100%;
+    width: 100%; /* Adjust width to fill the container */
     height: auto;
     display: block;
-    margin: 0 auto;
+    margin: 0 auto; /* Center the image */
 }
 
 .topics {
-    font-size: 12px; 
-    text-align: left; 
-    margin: 10px 0; 
+    font-size: 12px; /* Smaller font size for topics */
+    text-align: left; /* Align text to the left */
+    margin: 10px 0; /* Add some vertical margin */
 }
 
 .controls {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /* Ensure buttons and page info are on opposite sides */
     align-items: center;
     margin-top: 10px;
-    padding: 0 10px; 
-    width: 100%; 
+    padding: 0 10px; /* Add some padding around the controls */
+    width: 100%; /* Match the width of the slide section */
 }
 
 .button-group {

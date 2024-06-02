@@ -1,40 +1,6 @@
-const slideSets = [
-    {
-        title: '01-matrix',
-        paths: [
-            '../slides/01-matrix/1/page_1.png',
-            '../slides/01-matrix/1/page_2.png',
-            '../slides/01-matrix/1/page_3.png',
-            '../slides/01-matrix/1/page_4.png',
-            '../slides/01-matrix/1/page_5.png',
-            '../slides/01-matrix/1/page_6.png',
-            '../slides/01-matrix/1/page_7.png',
-            '../slides/01-matrix/1/page_8.png',
-        ],
-        total: 8, 
-        topics: ['Topic 1', 'Topic 2', 'Topic 3'] 
-    },
-    {
-        title: '4sum',
-        paths: [
-            '../slides/4sum/1/page_1.png',
-            '../slides/4sum/1/page_2.png',
-            '../slides/4sum/1/page_3.png',
-            '../slides/4sum/1/page_4.png',
-            '../slides/4sum/1/page_5.png',
-            '../slides/4sum/1/page_6.png',
-            '../slides/4sum/1/page_7.png',
-            '../slides/4sum/1/page_8.png',
-        ],
-        total: 8,
-        topics: ['Topic A', 'Topic B', 'Topic C'] 
-    }
-    // Add more slide sets if needed
-];
-
-const slidesPerPage = 7;
+let slidesPerPage = 7;
 let currentPage = 0;
-const totalPages = Math.ceil(slideSets.length / slidesPerPage);
+let slideSets = []; // Define slideSets in the global scope
 
 function createSlideSection(slideSet, index) {
     const section = document.createElement('section');
@@ -52,6 +18,7 @@ function createSlideSection(slideSet, index) {
     const img = document.createElement('img');
     img.id = `slide-image-${index}`;
     img.src = slideSet.paths[0];
+    img.dataset.page = 0; // Initialize data-page attribute
     section.appendChild(img);
 
     const controls = document.createElement('div');
@@ -94,11 +61,11 @@ function updateSlide(index, direction) {
     if (currentPage >= slideSet.total) currentPage = slideSet.total - 1;
     
     img.src = slideSet.paths[currentPage];
-    img.dataset.page = currentPage;
+    img.dataset.page = currentPage; // Update data-page attribute
     pageInfo.textContent = `${currentPage + 1} / ${slideSet.total}`;
 }
 
-function renderPage(page) {
+function renderPage(page, slideSets) {
     const container = document.getElementById('slides-container');
     container.innerHTML = '';
 
@@ -109,10 +76,11 @@ function renderPage(page) {
         createSlideSection(slideSets[i], i);
     }
 
-    updatePaginationControls(page);
+    updatePaginationControls(page, slideSets);
 }
 
-function updatePaginationControls(currentPage) {
+function updatePaginationControls(currentPage, slideSets) {
+    const totalPages = Math.ceil(slideSets.length / slidesPerPage);
     const paginationControls = document.getElementById('pagination-controls');
     paginationControls.innerHTML = '';
 
@@ -122,11 +90,15 @@ function updatePaginationControls(currentPage) {
         if (i === currentPage) {
             pageButton.disabled = true;
         } else {
-            pageButton.addEventListener('click', () => renderPage(i));
+            pageButton.addEventListener('click', () => renderPage(i, slideSets));
         }
         paginationControls.appendChild(pageButton);
     }
 }
 
-// Initial display
-renderPage(currentPage);
+fetch('slideSets.json')
+    .then(response => response.json())
+    .then(data => {
+        slideSets = data; // Assign fetched data to the global slideSets variable
+        renderPage(0, slideSets);
+    });
