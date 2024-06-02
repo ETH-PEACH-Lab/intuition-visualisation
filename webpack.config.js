@@ -7,6 +7,7 @@ module.exports = {
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
+    publicPath: '/intuition-visualisation/', // Update this line
     clean: true,
   },
   mode: 'development',
