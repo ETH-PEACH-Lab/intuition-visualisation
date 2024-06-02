@@ -159,7 +159,7 @@ function renderTopics(topics) {
     const container = document.getElementById('topic-tags-container');
     container.innerHTML = '';
 
-    const uniqueTopics = [...new Set(topics.flat())];
+    const uniqueTopics = [...new Set(topics.flat().map(topic => topic.trim().toLowerCase()))];
 
     uniqueTopics.forEach(topic => {
         const topicElement = createTopicElement(topic, true);
