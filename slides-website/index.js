@@ -1,28 +1,28 @@
 import './styles.css';
 
-console.log('JavaScript loaded'); // Add this line to confirm JavaScript is loaded
+console.log('JavaScript loaded');
 
-let slidesPerPage = 20; // Set the number of slides per page to 20
+let slidesPerPage = 20;
 let currentPage = 0;
-let slideSets = []; // Define slideSets in the global scope
-let filteredSlideSets = []; // Define filtered slideSets
+let slideSets = [];
+let filteredSlideSets = [];
 
 const topicColorMapping = {
-    'array': '#ADD8E6',         // Light Blue
-    'tree': '#90EE90',          // Light Green
-    'graph': '#FFB6C1',         // Light Pink
-    'dynamic programming': '#FFD700', // Gold
-    'string': '#FF69B4',        // Hot Pink
-    'math': '#CD5C5C',          // Indian Red
-    'hash table': '#FFA07A',    // Light Salmon
-    'depth-first search': '#20B2AA', // Light Sea Green
-    'breadth-first search': '#778899', // Light Slate Gray
-    'two pointers': '#B0E0E6',  // Powder Blue
-    'binary search': '#32CD32', // Lime Green
-    'backtracking': '#FF4500',  // Orange Red
-    'greedy': '#DA70D6',        // Orchid
-    'heap': '#EEE8AA',          // Pale Goldenrod
-    'default': '#D3D3D3'        // Light Gray
+    'array': '#ADD8E6',
+    'tree': '#90EE90',
+    'graph': '#FFB6C1',
+    'dynamic programming': '#FFD700',
+    'string': '#FF69B4',
+    'math': '#CD5C5C',
+    'hash table': '#FFA07A',
+    'depth-first search': '#20B2AA',
+    'breadth-first search': '#778899',
+    'two pointers': '#B0E0E6',
+    'binary search': '#32CD32',
+    'backtracking': '#FF4500',
+    'greedy': '#DA70D6',
+    'heap': '#EEE8AA',
+    'default': '#D3D3D3'
 };
 
 function getColorForTopic(topic) {
@@ -66,8 +66,8 @@ function createSlideSection(slideSet, index) {
 
     const img = document.createElement('img');
     img.id = `slide-image-${index}`;
-    img.src = `/intuition-visualisation/${slideSet.paths[0]}`; // Ensure paths are correct
-    img.dataset.page = 0; // Initialize data-page attribute
+    img.src = `/intuition-visualisation/${slideSet.paths[0]}`;
+    img.dataset.page = 0;
     section.appendChild(img);
 
     const controls = document.createElement('div');
@@ -109,8 +109,8 @@ function updateSlide(index, direction) {
     if (currentPage < 0) currentPage = 0;
     if (currentPage >= slideSet.total) currentPage = slideSet.total - 1;
     
-    img.src = `/intuition-visualisation/${slideSet.paths[currentPage]}`; // Ensure paths are correct
-    img.dataset.page = currentPage; // Update data-page attribute
+    img.src = `/intuition-visualisation/${slideSet.paths[currentPage]}`;
+    img.dataset.page = currentPage;
     pageInfo.textContent = `${currentPage + 1} / ${slideSet.total}`;
 }
 
@@ -164,6 +164,7 @@ function renderTopics(topics) {
     container.innerHTML = '';
 
     const uniqueTopics = [...new Set(topics.flat().map(topic => topic.trim().toLowerCase()))];
+    uniqueTopics.sort();
 
     uniqueTopics.forEach(topic => {
         const topicElement = createTopicElement(topic, true);
@@ -180,9 +181,9 @@ document.getElementById('filter-button').addEventListener('click', () => {
 fetch('/intuition-visualisation/slideSets.json')
     .then(response => response.json())
     .then(data => {
-        console.log('Data fetched:', data); // Add this line to confirm data fetching
-        slideSets = data; // Assign fetched data to the global slideSets variable
-        filteredSlideSets = slideSets; // Initialize filtered slideSets with all slides
+        console.log('Data fetched:', data);
+        slideSets = data;
+        filteredSlideSets = slideSets;
         const allTopics = slideSets.map(slideSet => slideSet.topics);
         renderTopics(allTopics);
         renderPage(0, slideSets);

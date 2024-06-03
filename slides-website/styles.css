@@ -6,7 +6,7 @@ body {
 }
 
 .container {
-    width: 70%;
+    width: 55%;
     margin: 0 auto;
     text-align: left;
 }
@@ -20,12 +20,12 @@ h1 {
 }
 
 #topic-tags-container {
-    width: 70%;
+    width: 55%;
     margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 10px;
+    gap: 5px;
     margin-bottom: 20px;
 }
 
