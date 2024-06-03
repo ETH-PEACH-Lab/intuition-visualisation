@@ -66,7 +66,7 @@ function createSlideSection(slideSet, index) {
 
     const img = document.createElement('img');
     img.id = `slide-image-${index}`;
-    img.src = slideSet.paths[0];
+    img.src = `${slideSet.paths[0]}`; // Ensure paths are correct
     img.dataset.page = 0; // Initialize data-page attribute
     section.appendChild(img);
 
@@ -109,7 +109,7 @@ function updateSlide(index, direction) {
     if (currentPage < 0) currentPage = 0;
     if (currentPage >= slideSet.total) currentPage = slideSet.total - 1;
     
-    img.src = slideSet.paths[currentPage];
+    img.src = `${slideSet.paths[currentPage]}`; // Ensure paths are correct
     img.dataset.page = currentPage; // Update data-page attribute
     pageInfo.textContent = `${currentPage + 1} / ${slideSet.total}`;
 }
@@ -182,7 +182,7 @@ fetch('slideSets.json')
     .then(data => {
         console.log('Data fetched:', data); // Add this line to confirm data fetching
         slideSets = data; // Assign fetched data to the global slideSets variable
-        filteredSlideSets = slideSets; // Initialize filteredSlideSets with all slides
+        filteredSlideSets = slideSets; // Initialize filtered slideSets with all slides
         const allTopics = slideSets.map(slideSet => slideSet.topics);
         renderTopics(allTopics);
         renderPage(0, slideSets);

@@ -1,19 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Slide Viewer</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slide Viewer</title>
+  <link rel="icon" type="image/png" href="favicon.png">
 </head>
 <body>
-    <h1>Slide Viewer</h1>
-    <div id="topic-tags-container"></div>
-    <div id="filter-container">
-        <input type="text" id="topic-filter" placeholder="Enter topics separated by ','">
-        <button id="filter-button">Filter</button>
+  <div class="container">
+    <h1 style="text-align:left">Slide Viewer</h1>
+    <div id="introduction-container">
+      <p>Welcome to the Slide Viewer! This web page collects 400 algorithm intuition slides from 3100 algorithm problems in <a href="https://leetcode.com/problemset/">leetcode</a>.</p>
+      <p>Algorithm intuition is a visualization tool that helps people understand abstract algorithms. It can be a handwritten whiteboard draft or an demonstration animation, usually dipicting a specific example of the algorithm application.</p>
+      <p>Here you can browse through various slides on different topics. Use the filters below to find slides on specific topics.</p>
     </div>
-    <div id="slide-count-container"></div>
-    <div id="slides-container"></div>
-    <div id="pagination-controls"></div>
+  </div>
+  <div id="topic-tags-container"></div>
+  <div id="filter-container">
+    <input type="text" id="topic-filter" placeholder="Enter topics separated by ','">
+    <button id="filter-button">Filter</button>
+  </div>
+  <div id="slide-count-container"></div>
+  <div id="slides-container"></div>
+  <div id="pagination-controls"></div>
 </body>
 </html>

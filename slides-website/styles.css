@@ -5,8 +5,18 @@ body {
     background-color: #f4f4f9;
 }
 
+.container {
+    width: 70%;
+    margin: 0 auto;
+    text-align: left;
+}
+
 h1 {
-    text-align: center;
+    margin-bottom: 20px;
+}
+
+#introduction-container {
+    margin-bottom: 20px;
 }
 
 #topic-tags-container {
