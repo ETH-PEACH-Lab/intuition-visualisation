@@ -37,7 +37,7 @@ function createTopicElement(topic, isClickable = false) {
     topicElement.style.backgroundColor = getColorForTopic(topic);
     if (isClickable) {
         topicElement.classList.add('clickable');
-        topicElement.addEventListener('click', () => filterSlidesByTopics([topic]));
+        topicElement.addEventListener('click', () => filterSlidesByTopic([topic]));
     }
     return topicElement;
 }
@@ -151,13 +151,19 @@ function updateSlideCount(count) {
     slideCountContainer.textContent = `Slides found: ${count}`;
 }
 
-function filterSlidesByTopics(topics) {
+function filterSlidesByTopic(topics) {
     const normalizedTopics = topics.map(topic => topic.trim().toLowerCase());
-    filteredSlideSets = slideSets.filter(slideSet => {
-        const titleMatches = normalizedTopics.some(topic => slideSet.title.toLowerCase().includes(topic));
-        const topicsMatch = normalizedTopics.every(topic => slideSet.topics.map(t => t.trim().toLowerCase()).includes(topic));
-        return titleMatches || topicsMatch;
-    });
+    filteredSlideSets = slideSets.filter(slideSet => 
+        normalizedTopics.every(topic => slideSet.topics.map(t => t.trim().toLowerCase()).includes(topic))
+    );
+    renderPage(0, filteredSlideSets);
+}
+
+function filterSlidesByTitle(title) {
+    const normalizedTitle = title.trim().toLowerCase();
+    filteredSlideSets = slideSets.filter(slideSet => 
+        slideSet.title.toLowerCase().includes(normalizedTitle)
+    );
     renderPage(0, filteredSlideSets);
 }
 
@@ -177,13 +183,17 @@ function renderTopics(topics) {
 document.getElementById('filter-button').addEventListener('click', () => {
     const topicFilterInput = document.getElementById('topic-filter').value;
     const topics = topicFilterInput.split(',');
-    filterSlidesByTopics(topics);
+    filterSlidesByTopic(topics);
+});
+
+document.getElementById('filter-title-button').addEventListener('click', () => {
+    const titleFilterInput = document.getElementById('title-filter').value;
+    filterSlidesByTitle(titleFilterInput);
 });
 
 fetch('/intuition-visualisation/slideSets.json')
     .then(response => response.json())
     .then(data => {
-        console.log('Data fetched:', data);
         slideSets = data;
         filteredSlideSets = slideSets;
         const allTopics = slideSets.map(slideSet => slideSet.topics);
