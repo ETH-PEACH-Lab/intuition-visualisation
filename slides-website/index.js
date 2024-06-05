@@ -153,9 +153,11 @@ function updateSlideCount(count) {
 
 function filterSlidesByTopics(topics) {
     const normalizedTopics = topics.map(topic => topic.trim().toLowerCase());
-    filteredSlideSets = slideSets.filter(slideSet =>
-        normalizedTopics.every(topic => slideSet.topics.map(t => t.trim().toLowerCase()).includes(topic))
-    );
+    filteredSlideSets = slideSets.filter(slideSet => {
+        const titleMatches = normalizedTopics.some(topic => slideSet.title.toLowerCase().includes(topic));
+        const topicsMatch = normalizedTopics.every(topic => slideSet.topics.map(t => t.trim().toLowerCase()).includes(topic));
+        return titleMatches || topicsMatch;
+    });
     renderPage(0, filteredSlideSets);
 }
 
